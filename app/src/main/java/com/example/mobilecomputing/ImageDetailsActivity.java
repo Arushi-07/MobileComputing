@@ -1,10 +1,15 @@
 package com.example.mobilecomputing;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,14 +22,21 @@ public class ImageDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.image_details);
 
         Bundle extras = getIntent().getExtras();
-        String encodedImage = "";
+        Bitmap encodedImage ;
         if (extras != null) {
-            encodedImage = extras.getString("image_encoded");
+            encodedImage = (Bitmap)extras.get("image_encoded");
+            ImageView imageView = findViewById(R.id.image_preview);
+            imageView.setImageBitmap(encodedImage);
             //The key argument here must match that used in the other activity
         }
-        Log.d("image base64", encodedImage);
-        byte[] imageAsBytes = Base64.decode(encodedImage.getBytes(), Base64.DEFAULT);
-        ImageView imageView = findViewById(R.id.image_preview);
-        imageView.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+        Spinner spinner = (Spinner) findViewById(R.id.tag_spinner);
+        spinner.setOnItemSelectedListener(new SpinnerActivity());
+
+    }
+    public void uploadImage(View view) {
+        // Do something in response to button
+//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//        intent.putExtra("facing", "CAMERA_FACING_FRONT");
+//        startActivityForResult(intent, CAMERA_REQUEST);
     }
 }

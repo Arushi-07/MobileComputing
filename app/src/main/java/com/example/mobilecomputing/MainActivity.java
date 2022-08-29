@@ -11,15 +11,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Base64;
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
@@ -28,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermission();
-        //requestPermissions(new String[]{Manifest.permission.CAMERA},MY_CAMERA_PERMISSION_CODE);
         setContentView(R.layout.activity_main);
     }
 
@@ -47,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
     /** Called when the user taps the Send button */
     public void openCameraActivity(View view) {
         // Do something in response to button
-        Intent intent = new Intent(this, CameraActivity.class);
-//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//        intent.putExtra("facing", "CAMERA_FACING_FRONT");
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        intent.putExtra("facing", "CAMERA_FACING_FRONT");
         startActivityForResult(intent, CAMERA_REQUEST);
     }
 
@@ -60,30 +55,11 @@ public class MainActivity extends AppCompatActivity {
         String encodedImage;
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             image = (Bitmap) data.getExtras().get("data");
-            encodedImage = getEncodedString(image);
             Intent intent = new Intent(MainActivity.this, ImageDetailsActivity.class);
-            intent.putExtra("image_encoded", encodedImage);
+            intent.putExtra("image_encoded", image);
             startActivity(intent);
-            //setDataToDataBase();
         }
 
-    }
-    private String getEncodedString(Bitmap bitmap) {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-        byte[] imageArr = os.toByteArray();
-        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
-    }
-
-    /** Check if this device has a camera */
-    private boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
     }
 
     @Override

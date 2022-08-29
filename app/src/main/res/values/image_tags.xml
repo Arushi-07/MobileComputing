@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="image_tags">
+        <item>Nature</item>
+        <item>Animals</item>
+        <item>Flowers</item>
+        <item>Mountains</item>
+        <item>Library</item>
+        <item>Room</item>
+    </string-array>
+</resources>
