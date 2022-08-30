@@ -27,7 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ImageDetailsActivity extends AppCompatActivity {
-    public static final String REQUEST_URL = "http://172.20.10.3:5000/upload_image";
+    public static final String REQUEST_URL = "http://192.168.0.8:5000/upload_image";
     Bitmap imageBitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +50,9 @@ public class ImageDetailsActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void uploadImage(View view) throws IOException {
-        // Do something in response to button
-//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//        intent.putExtra("facing", "CAMERA_FACING_FRONT");
-//        startActivityForResult(intent, CAMERA_REQUEST);
-        new RequestTask().execute(REQUEST_URL, imageBitmap);
+        Spinner spinner = (Spinner) findViewById(R.id.tag_spinner);
+        String tag = spinner.getSelectedItem().toString();
+        new RequestTask().execute(REQUEST_URL, imageBitmap, tag);
 
     }
 
