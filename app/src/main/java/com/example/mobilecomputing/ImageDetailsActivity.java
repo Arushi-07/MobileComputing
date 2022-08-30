@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class ImageDetailsActivity extends AppCompatActivity {
