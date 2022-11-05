@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.concurrent.ExecutionException;
 
 public class ImageDetailsActivity extends AppCompatActivity {
-    public static final String REQUEST_URL = "http://192.168.0.8:5000/upload_image";
+    public static final String REQUEST_URL = "http://10.157.202.30:5000/upload_image";
     Bitmap imageBitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +29,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void uploadImage(View view) throws ExecutionException, InterruptedException {
-        Spinner spinner = (Spinner) findViewById(R.id.tag_spinner);
-        String tag = spinner.getSelectedItem().toString();
+        String tag = "digits";
         String response = new UploadRequest().execute(REQUEST_URL, imageBitmap, tag).get();
         if(response.equalsIgnoreCase("success")) {
             Toast.makeText(this, "Upload Successful!", Toast.LENGTH_LONG).show();
