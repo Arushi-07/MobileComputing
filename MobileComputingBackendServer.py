@@ -11,7 +11,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/upload_image', methods=['GET','POST'])
 def upload_file():
-    tag = request.form["tag"]
+    tag = "digits"
     print(request.files["file"])
     filename = request.files["file"].filename
 

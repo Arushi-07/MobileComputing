@@ -25,8 +25,7 @@ public class UploadRequest extends AsyncTask<Object, String, String> {
         final RequestBody imageUploadBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", fileName,
-                        RequestBody.create(MediaType.parse("text/plain"), bitmapToByte(bitmap)))
-                .addFormDataPart("tag", params[2].toString())
+                        RequestBody.create(MediaType.parse("image/jpg"), bitmapToByte(bitmap)))
                 .build();
         final Request request = new Request.Builder().url(params[0].toString()).post(imageUploadBody).build();
         String responseString = "";
