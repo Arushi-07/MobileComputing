@@ -49,7 +49,7 @@ public class UploadRequest extends AsyncTask<Object, String, String> {
 
     public byte[] bitmapToByte(Bitmap bmp) {
         final ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
 }
