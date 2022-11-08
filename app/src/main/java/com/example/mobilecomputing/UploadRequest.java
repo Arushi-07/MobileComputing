@@ -19,13 +19,15 @@ public class UploadRequest extends AsyncTask<Object, String, String> {
     @Override
     protected String doInBackground(Object... params) {
         final Bitmap bitmap = (Bitmap)params[1];
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
         OkHttpClient client = new OkHttpClient();
         UUID uuid = UUID.randomUUID();
-        final String fileName = uuid.toString() + ".jpeg";
+        final String fileName = uuid.toString() + ".png";
         final RequestBody imageUploadBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", fileName,
-                        RequestBody.create(MediaType.parse("image/jpg"), bitmapToByte(bitmap)))
+                        RequestBody.create(MEDIA_TYPE_PNG, bitmapToByte(bitmap)))
                 .build();
         final Request request = new Request.Builder().url(params[0].toString()).post(imageUploadBody).build();
         String responseString = "";
