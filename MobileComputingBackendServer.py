@@ -56,10 +56,14 @@ def upload_file():
     bg=cv2.morphologyEx(cropimage, cv2.MORPH_DILATE, se)
     out_gray=cv2.divide(cropimage, bg, scale=255)
     out_binary=cv2.threshold(out_gray, 0, 255, cv2.THRESH_OTSU )[1]
-    resize_image = cv2.resize(out_binary, (28, 28), interpolation=cv2.INTER_CUBIC)
+    resize_image_2 = cv2.resize(out_binary, (100, 100), interpolation=cv2.INTER_CUBIC)
+    out_binary_2=cv2.threshold(resize_image_2, 0, 255, cv2.THRESH_OTSU )[1]
+    resize_image_1 = cv2.resize(out_binary_2, (64, 64), interpolation=cv2.INTER_CUBIC)
+
+    resize_image = cv2.resize(resize_image_1, (28, 28), interpolation=cv2.INTER_CUBIC)
     black_background = cv2.bitwise_not(resize_image)
 
-    image = np.copy(black_background).reshape(1,28,28,1)
+    image = np.copy(resize_image).reshape(1,28,28,1)
     yhat = new_model.predict([image])
     print('Predicted: {}'.format(np.argmax(yhat)))
 
