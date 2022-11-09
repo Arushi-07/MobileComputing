@@ -64,7 +64,9 @@ def upload_file():
     black_background = cv2.bitwise_not(resize_image)
 
 
-    image = np.copy(resize_image).reshape(1,28,28,1)
+    image = np.copy(black_background).reshape(1,28,28,1)
+    image = image.astype('float32')
+    image /= 255
     yhat = new_model.predict([image])
     print('Predicted: {}'.format(np.argmax(yhat)))
     val = str(np.argmax(yhat))
