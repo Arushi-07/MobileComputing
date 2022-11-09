@@ -41,32 +41,37 @@ def upload_file():
     print(request.files["file"])
     filename = request.files["file"].filename
 
-    if not os.path.exists(UPLOAD_FOLDER + tag):
-    	os.makedirs(UPLOAD_FOLDER + tag)
 
-    image = Image.open(request.files["file"])
-    image.save(UPLOAD_FOLDER + tag + "/" + filename)
+    image_input = Image.open(request.files["file"])
+
     print("saved image")
     # predicting the label of image
-    image = np.array(image)
+    image = np.array(image_input)
+
+
     grayimage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     w, h = grayimage.shape
-    cropimage = crop_img(grayimage, 0.5)
+    cropimage = crop_img(grayimage, 0.4)
     se=cv2.getStructuringElement(cv2.MORPH_RECT , (8,8))
     bg=cv2.morphologyEx(cropimage, cv2.MORPH_DILATE, se)
     out_gray=cv2.divide(cropimage, bg, scale=255)
     out_binary=cv2.threshold(out_gray, 0, 255, cv2.THRESH_OTSU )[1]
-    resize_image_2 = cv2.resize(out_binary, (100, 100), interpolation=cv2.INTER_CUBIC)
-    out_binary_2=cv2.threshold(resize_image_2, 0, 255, cv2.THRESH_OTSU )[1]
-    resize_image_1 = cv2.resize(out_binary_2, (64, 64), interpolation=cv2.INTER_CUBIC)
+    resize_image_2 = cv2.resize(out_binary, (128, 128), interpolation=cv2.INTER_CUBIC)
+    resize_image_2 = cv2.resize(resize_image_2, (100, 100), interpolation=cv2.INTER_CUBIC)
+    resize_image_1 = cv2.resize(resize_image_2, (64, 64), interpolation=cv2.INTER_CUBIC)
 
     resize_image = cv2.resize(resize_image_1, (28, 28), interpolation=cv2.INTER_CUBIC)
     black_background = cv2.bitwise_not(resize_image)
 
+
     image = np.copy(resize_image).reshape(1,28,28,1)
     yhat = new_model.predict([image])
     print('Predicted: {}'.format(np.argmax(yhat)))
-
+    val = str(np.argmax(yhat))
+    if not os.path.exists(UPLOAD_FOLDER + val):
+        print("os: ", str(UPLOAD_FOLDER + val))
+        os.makedirs(str(UPLOAD_FOLDER + val))
+    image_input.save(UPLOAD_FOLDER + val + "/" + filename)
     return "found"
 
 
