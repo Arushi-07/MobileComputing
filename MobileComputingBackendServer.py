@@ -56,7 +56,8 @@ def upload_file():
     bg=cv2.morphologyEx(cropimage, cv2.MORPH_DILATE, se)
     out_gray=cv2.divide(cropimage, bg, scale=255)
     out_binary=cv2.threshold(out_gray, 0, 255, cv2.THRESH_OTSU )[1]
-    resize_image_2 = cv2.resize(out_binary, (100, 100), interpolation=cv2.INTER_CUBIC)
+    resize_image_2 = cv2.resize(out_binary, (128, 128), interpolation=cv2.INTER_CUBIC)
+    resize_image_2 = cv2.resize(resize_image_2, (100, 100), interpolation=cv2.INTER_CUBIC)
     resize_image_1 = cv2.resize(resize_image_2, (64, 64), interpolation=cv2.INTER_CUBIC)
 
     resize_image = cv2.resize(resize_image_1, (28, 28), interpolation=cv2.INTER_CUBIC)
