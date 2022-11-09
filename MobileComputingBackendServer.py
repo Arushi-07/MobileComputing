@@ -21,11 +21,19 @@ import cv2
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
 
-def crop_img(img, scale=1.0):
+# def crop_img(img, scale=1.0):
+#     center_x, center_y = img.shape[1] / 2, img.shape[0] / 2
+#     width_scaled, height_scaled = img.shape[1] * scale, img.shape[0] * scale
+#     left_x, right_x = center_x - width_scaled / 2, center_x + width_scaled / 2
+#     top_y, bottom_y = center_y - height_scaled / 2, center_y + height_scaled / 2
+#     img_cropped = img[int(top_y):int(bottom_y), int(left_x):int(right_x)]
+#     return img_cropped
+
+def crop_square(img, scale=1.0):
     center_x, center_y = img.shape[1] / 2, img.shape[0] / 2
-    width_scaled, height_scaled = img.shape[1] * scale, img.shape[0] * scale
-    left_x, right_x = center_x - width_scaled / 2, center_x + width_scaled / 2
-    top_y, bottom_y = center_y - height_scaled / 2, center_y + height_scaled / 2
+    scaled = min(img.shape[0], img.shape[1]) * scale
+    left_x, right_x = center_x - scaled / 2, center_x + scaled / 2
+    top_y, bottom_y = center_y - scaled / 2, center_y + scaled / 2
     img_cropped = img[int(top_y):int(bottom_y), int(left_x):int(right_x)]
     return img_cropped
 
@@ -51,7 +59,7 @@ def upload_file():
 
     grayimage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     w, h = grayimage.shape
-    cropimage = crop_img(grayimage, 0.4)
+    cropimage = crop_square(grayimage, 0.4)
     se=cv2.getStructuringElement(cv2.MORPH_RECT , (8,8))
     bg=cv2.morphologyEx(cropimage, cv2.MORPH_DILATE, se)
     out_gray=cv2.divide(cropimage, bg, scale=255)
