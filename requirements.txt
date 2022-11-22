@@ -2,3 +2,4 @@ flask
 requests-toolbelt
 Pillow
 keras
+tensorflow
