@@ -1,5 +1,6 @@
-flask
-requests-toolbelt
-Pillow
-keras
-tensorflow
+Flask==2.1.1
+keras==2.10.0
+numpy==1.21.5
+opencv_python_headless==4.5.2.52
+Pillow==9.3.0
+requests_toolbelt==0.9.1
