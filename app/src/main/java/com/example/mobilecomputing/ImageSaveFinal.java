@@ -31,21 +31,20 @@ public class ImageSaveFinal {
 
         try {
             String data1 = dir.getPath() + "/"+ System.currentTimeMillis();
-            Log.d("data1 path: " , data1);
-
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
             myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
             byte[] byteArray = outstream.toByteArray();
 
-            Charset charset = Charset.forName("UTF-8");
-
-            File gpxfile = new File(dir.getPath(), "hello.png");
-            FileWriter writer = new FileWriter(gpxfile);
-            writer.append(new String(bitmapToByte(myBitmap), charset));
-            writer.flush();
-            writer.close();
-            Log.d("debug", "image saved");
-            Log.d("debug",gpxfile.getAbsolutePath());
+            File image = new File(dir.getPath(), "hello1.jpg");
+            if(image.createNewFile()) {
+                Log.d("debug", "file successfully created");
+            } else {
+                Log.d("debug", "file not created");
+            }
+            FileOutputStream stream = new FileOutputStream(image);
+            stream.write(byteArray);
+            stream.flush();
+            stream.close();
             Toast.makeText(ctx, "Save Completed", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
