@@ -25,25 +25,27 @@ public class ImageSaveFinal {
             Log.d("debug", "dir exists");
         }
 
-        Log.d("dir_path", dir.getPath());
+
 
         try {
-            String data1 = dir.getPath() + "/"+ System.currentTimeMillis();
+            String filePath = dir.getPath() + "/"+ System.currentTimeMillis() + ".jpg";
             ByteArrayOutputStream outstream = new ByteArrayOutputStream();
             myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
             byte[] byteArray = outstream.toByteArray();
-
-            File image = new File(dir.getPath(), "hello1.jpg");
+            Log.d("filePath", filePath);
+            File image = new File(filePath);
             if(image.createNewFile()) {
                 Log.d("debug", "file successfully created");
+                FileOutputStream stream = new FileOutputStream(image);
+                stream.write(byteArray);
+                stream.flush();
+                stream.close();
+                Toast.makeText(ctx, "Save Completed", Toast.LENGTH_SHORT).show();
             } else {
+                Toast.makeText(ctx, "File Not Saved", Toast.LENGTH_SHORT).show();
                 Log.d("debug", "file not created");
             }
-            FileOutputStream stream = new FileOutputStream(image);
-            stream.write(byteArray);
-            stream.flush();
-            stream.close();
-            Toast.makeText(ctx, "Save Completed", Toast.LENGTH_SHORT).show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
