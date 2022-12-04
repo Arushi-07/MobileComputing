@@ -3,9 +3,9 @@ package com.example.mobilecomputing;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.concurrent.ExecutionException;
 
 public class ImageDetailsActivity extends AppCompatActivity {
-    public static final String REQUEST_URL = "http://10.157.238.109:5000/upload_image";
+    public static final String REQUEST_URL = "http://050d-34-125-21-111.ngrok.io/upload_image";
     Bitmap imageBitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +29,30 @@ public class ImageDetailsActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void uploadImage(View view) throws ExecutionException, InterruptedException {
-        String response = new UploadRequest().execute(REQUEST_URL, imageBitmap).get();
-        if(response.equalsIgnoreCase("success")) {
-            Toast.makeText(this, "Upload Successful!", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "Upload Unsuccessful, Please try again!", Toast.LENGTH_LONG).show();
+        Bitmap[][] bmp = ImageProcessing.splitBitmap(this.imageBitmap, 2, 2);
+        int[] predicted = new int[10];
+        for(int i = 0; i< 2;i++) {
+            for(int j = 0;j <2;j++){
+//                String response = new UploadRequest().execute(REQUEST_URL, bmp[i][j]).get();
+//                int pred = Integer.parseInt(response);
+//                predicted[pred]++;
+            }
         }
+        int maxTillNow = 0;
+        int predictedNum = 0;
+        for(int i = 0;i <10;i++) {
+            if(maxTillNow < predicted[i]){
+                maxTillNow = predicted[i];
+                predictedNum = i;
+            }
+        }
+            ImageSaveFinal.saveFile(imageBitmap, this, predictedNum);
+//        String response = new UploadRequest().execute(REQUEST_URL, imageBitmap).get();
+//        if(response.equalsIgnoreCase("success")) {
+//            Toast.makeText(this, "Upload Successful!", Toast.LENGTH_LONG).show();
+//        } else {
+//            Toast.makeText(this, "Upload Unsuccessful, Please try again!", Toast.LENGTH_LONG).show();
+//        }
 
     }
 
